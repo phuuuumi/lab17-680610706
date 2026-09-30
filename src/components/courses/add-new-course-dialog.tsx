@@ -364,7 +364,7 @@ export function AddNewCourseDialog() {
                 onClick={() => append({ name: "", email: "" })}
               >
                 <Plus className="size-4" />
-                เพิ่มอีเมล
+                เพิ่มผู้สอน
               </Button>
             </FieldSet>
             <Controller
