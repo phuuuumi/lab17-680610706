@@ -25,7 +25,6 @@ export const emptyCourseForm: CourseFormValues = {
   instructors: [],
 };
 
-export const COURSE_TITLE_MAX = 100;
 
 /** ตรวจทีละ field — คืนข้อความ error ภาษาไทย หรือ undefined ถ้าผ่าน */
 export function validateCourseField(

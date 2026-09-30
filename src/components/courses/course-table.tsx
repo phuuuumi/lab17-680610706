@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEnrollmentStore } from "@/lib/enrollment-store";
+import { Badge } from "../ui/badge";
 
 export function CourseTable() {
   const courses = useEnrollmentStore((s) => s.courses);
@@ -20,7 +21,11 @@ export function CourseTable() {
           <TableRow>
             <TableHead>รหัสวิชา</TableHead>
             <TableHead>ชื่อวิชา</TableHead>
+            <TableHead>หลักสูตร</TableHead>
+            <TableHead>ภาคการศึกษา</TableHead>
+            <TableHead>รายละเอียด</TableHead>
             <TableHead>ผู้สอน</TableHead>
+            <TableHead>รับข่าวสารทางอีเมล</TableHead>
             <TableHead className="w-20">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -40,12 +45,45 @@ export function CourseTable() {
               <TableCell>{course.courseId}</TableCell>
               <TableCell>{course.courseTitle}</TableCell>
               <TableCell>
+                <Badge variant="ghost">{course.program}</Badge>
+              </TableCell>
+              <TableCell>
+                {(course.semester === "3") ?
+                  "ภาคฤดูร้อน"
+                 : `ภาคการศึกษาที่ ${course.semester}`
+                }
+                </TableCell>
+              <TableCell>
+                <span className="whitespace-normal text-muted-foreground">
+                {course.description ?
+                  `${course.description}`
+                  : "-"
+                } 
+                </span>
+              </TableCell>
+              <TableCell>
                 {/* แสดงรายชื่อผู้สอนเป็นข้อความธรรมดา คั่นด้วย ", " */}
                 {course.instructors.length === 0 ? (
                   <span className="text-muted-foreground">ยังไม่มีผู้สอน</span>
                 ) : (
-                  course.instructors.join(", ")
+                  <>
+                    {course.instructors.map((i) => (
+                      <div key={i.email ?? i.name} className="space-y-1">
+                        <p>{i.name}</p>
+                        <p className="text-xs text-muted-foreground">{i.email}</p>
+                      </div>
+                    ))}
+                  </>
                 )}
+              </TableCell>
+              <TableCell>
+                <Badge variant={course.notifyByEmail? "default" : "secondary"}>
+
+                {
+                  (course.notifyByEmail)?
+                  "รับ" : "ไม่รับ"
+                }
+                </Badge>
               </TableCell>
               <TableCell>
                 <ConfirmDeleteButton
@@ -54,6 +92,7 @@ export function CourseTable() {
                   description={`ลบ ${course.courseId} — ${course.courseTitle} ออกจากรายวิชาที่เปิดสอน พร้อมการลงทะเบียนทั้งหมดของวิชานี้`}
                   onConfirm={() => removeCourse(course.courseId)}
                 />
+                
               </TableCell>
             </TableRow>
           ))}
