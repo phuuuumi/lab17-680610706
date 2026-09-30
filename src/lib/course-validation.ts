@@ -11,6 +11,8 @@ import type { Course } from "@/lib/types";
  *   (ซ้ำ)       → .refine(...) เช็ก courseId กับวิชาที่มีอยู่แล้ว
  */
 
+import { COURSE_TITLE_MAX } from "./schemas/course-schema";
+
 export type CourseFormValues = {
   courseId: string;
   courseTitle: string;
